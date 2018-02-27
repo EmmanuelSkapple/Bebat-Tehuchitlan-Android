@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Bebat-teuchitlan.iml" filepath="$PROJECT_DIR$/Bebat-teuchitlan.iml" />
+      <module fileurl="file://C:\Users\Monserrath\Desktop\Bebat-teuchitlan\Teuchitlan.iml" filepath="C:\Users\Monserrath\Desktop\Bebat-teuchitlan\Teuchitlan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
