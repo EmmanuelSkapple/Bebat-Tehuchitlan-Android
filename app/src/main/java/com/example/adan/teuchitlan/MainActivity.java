@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,16 +30,20 @@ import com.estimote.coresdk.observation.region.RegionUtils;
 import com.estimote.coresdk.observation.utils.Proximity;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-
-
         implements NavigationView.OnNavigationItemSelectedListener {
-        BeaconManager beaconManager;
     private boolean notificationAlreadyShown = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        
         Button btnMapaProgreso = (Button)findViewById(R.id.button);
         btnMapaProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,45 +88,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        beaconManager = new BeaconManager(getApplicationContext());
-        EstimoteSDK.initialize(getApplicationContext(), "<teuchitlan-84i>", "<4f94bfb6df0d2b5ddff8c4d4b66ef73e>");
-
-        beaconManager.setLocationListener(new BeaconManager.LocationListener() {
-            @Override
-            public void onLocationsFound(List<EstimoteLocation> beacons) {
-                Log.d("LocationListener", "Nearby beacons: " + beacons);
-
-                String beaconRosa="[cd28bb55cf08c21ccb05b2bb656a7632]";
-                String beaconAzul="[e062c4d5b22baeeacf2718691ac7902c]";
-                String beaconMenta="[80455b21003d1c2a550819a5d942c21b]";
-                for (EstimoteLocation beacon : beacons) {
-                    Log.d("xxxxxx","entro al for de beacon");
-                    Log.d("numero de beacon",beacon.id.toString());
-                    if (beacon.id.toString().equals(beaconRosa)
-                            && RegionUtils.computeProximity(beacon) == Proximity.NEAR) {
-                        Log.d("xxxxxx","entro al if de beacon");
-                        Bitmap bMap = BitmapFactory.decodeFile("/home/adan/Descargas/Teuchitlan/app/src/main/res/drawable/beaconyellow.png");
-                        showNotification("Descubriste beacon ", "aprende de el.",bMap,"rosa");
-                    }
-                    else if(beacon.id.toString().equals(beaconAzul)
-                            && RegionUtils.computeProximity(beacon) == Proximity.NEAR){
-                        Bitmap bMap = BitmapFactory.decodeFile("/home/adan/Descargas/Teuchitlan/app/src/main/res/drawable/beaconblue.png");
-                        showNotification("Descubriste beacon ", "aprende de el.",bMap,"azul");
-                    }
-
-                    else if(beacon.id.toString().equals(beaconMenta)
-                            && RegionUtils.computeProximity(beacon) == Proximity.NEAR){
-                        Bitmap bMap = BitmapFactory.decodeFile("/home/adan/Descargas/Teuchitlan/app/src/main/res/drawable/beaconblue.png");
-                        showNotification("Descubriste beacon ", "aprende de el.",bMap,"menta");
-                    }
-
-                }
-            }
-        });
-
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -131,11 +97,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback(){
-            @Override public void onServiceReady() {
-                beaconManager.startLocationDiscovery();
-            }
-        });
 
     }
 
@@ -144,11 +105,6 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         Log.d("tag","entro a onResume");
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        beaconManager.disconnect();
     }
 
     @Override
