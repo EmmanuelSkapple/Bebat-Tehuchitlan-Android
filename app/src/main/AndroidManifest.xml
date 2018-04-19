@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".InformacionBeacon" />
-        <activity android:name=".mapaProgreso" />
         <activity android:name=".progreso" />
         <activity android:name=".beaconActual" />
         <activity android:name=".queHacer" />

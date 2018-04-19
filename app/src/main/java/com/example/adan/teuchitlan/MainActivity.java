@@ -8,18 +8,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         btnMapaProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), mapaProgreso.class);
+                Intent intent = new Intent(getApplicationContext(), mapsTeuchitlan.class);
                 startActivityForResult(intent,0);
             }
         });
@@ -190,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Intent intent = new Intent(getApplicationContext(), mapaProgreso.class);
+            Intent intent = new Intent(getApplicationContext(), mapsTeuchitlan.class);
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(getApplicationContext(), progreso.class);
