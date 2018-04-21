@@ -159,7 +159,7 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
                 .position(pocision)
                 .title(titulo)
                 .snippet(info)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconazul)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconblue_resized)));
     }
 
 
