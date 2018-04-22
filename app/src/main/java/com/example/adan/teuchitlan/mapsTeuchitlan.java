@@ -33,7 +33,14 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     private GoogleApiClient googleApiClient;
     private static final int LOCATION_REQUEST_CODE = 101;
 
-    public static final LatLng coordenadasTeuchitlan = new LatLng(20.685499, -103.847768);
+    private static final LatLng coordenadasTeuchitlan = new LatLng(20.685499, -103.847768);
+    private static final LatLng plazaTeuchitlan = new LatLng(20.683778, -103.847250);
+    private static final LatLng piramideMenorGuachimontones = new LatLng(20.694792, -103.836523);
+    private static final LatLng rioTeuchitlan = new LatLng(20.686091, -103.843438);
+    private static final LatLng casaCultura = new LatLng(20.683610, -103.848356);
+
+    private Marker mPlazaTeuchitlan;
+
 
 
 
@@ -109,6 +116,17 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
         setMarker(coordenadasTeuchitlan, "Expo Guadalajara", "Centro de Convenciones");
 
+        setMarker(plazaTeuchitlan, "Plaza Municipal de Teuchitlan", " ");
+
+        setMarker(piramideMenorGuachimontones, "Piramide Menor", " ");
+
+        setMArkerVisited(rioTeuchitlan, "Rio de Teuchitlan", " ");
+
+        setMArkerCurrentPlace(casaCultura, "Casa de Cultura", " ");
+
+
+
+
         mMap.setMyLocationEnabled(true);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadasTeuchitlan, 16.0f));
@@ -153,13 +171,30 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     }
 
 
-    private void setMarker(LatLng pocision, String titulo, String info) {
+    private void setMarker(LatLng posicion, String titulo, String info) {
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
-                .position(pocision)
+                .position(posicion)
                 .title(titulo)
                 .snippet(info)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconblue_resized)));
+    }
+
+    private void setMArkerVisited(LatLng posicion, String Titulo, String info){
+        Marker myMarkerVisited = mMap.addMarker(new MarkerOptions()
+                .position(posicion)
+                .title(Titulo)
+                .snippet(info)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconblue_resized_visited)));
+    }
+
+    private void setMArkerCurrentPlace(LatLng posicion, String titulo, String info){
+
+        Marker myMarkerCurrent = mMap.addMarker(new MarkerOptions()
+                .position(posicion)
+                .title(titulo)
+                .snippet(info)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beacon_purple_current_place)));
     }
 
 
@@ -173,4 +208,7 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
+
 }
