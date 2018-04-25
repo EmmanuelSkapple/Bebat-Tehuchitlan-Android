@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
+
         Button btnMapaProgreso = (Button)findViewById(R.id.button);
         btnMapaProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
