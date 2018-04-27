@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "414119040432",
+    "firebase_url": "https://teuchiapp.firebaseio.com",
+    "project_id": "teuchiapp",
+    "storage_bucket": "teuchiapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414119040432:android:0134e2fe8367bfd2",
+        "android_client_info": {
+          "package_name": "com.example.adan.teuchitlan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414119040432-bf9iskuso1qcgb7lc16s5f79ifuho2f4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Jyzr6swXLKEQcyt2gRA_cm_cJw7G9jw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

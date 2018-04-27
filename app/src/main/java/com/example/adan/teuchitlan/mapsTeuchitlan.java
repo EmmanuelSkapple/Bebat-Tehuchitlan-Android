@@ -3,12 +3,17 @@ package com.example.adan.teuchitlan;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,8 +28,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+
 
 
 public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
@@ -41,11 +55,55 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
     private Marker mPlazaTeuchitlan;
 
+    private DatabaseReference mDatabase, referencia;
+
+    Intent i = getIntent();
+    ArrayList <String> ubicacionesBeacons = new ArrayList<String>();
+     String ubicacion;
+     String latitud;
+     String longitud;
+     String [] partes;
+     int counter = 0;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        referencia = mDatabase.child("Teuchitlan/beacons");
+
+        if(conectadoInternet()){
+            referencia.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapChild : dataSnapshot.getChildren()){
+
+                        //Log.d("la ubicacion es: ", snapChild.child("ubicacion").getValue().toString());
+
+
+                        ubicacion = snapChild.child("ubicacion").getValue().toString();
+
+                        ubicacionesBeacons.add(ubicacion);
+
+                        //counter++;
+
+
+
+
+                        /*String [] partes = ubicacion.split(",");
+                        latitud = partes[0];
+                        longitud = partes[1];
+                        Log.d(latitud, longitud);*/
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_mapa_progreso);
@@ -100,7 +158,6 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
         checkLocationandAddToMap();
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -112,20 +169,29 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
             return;
         }
 
+        for (String object: ubicacionesBeacons) {
+            //Log.d("la ubicacion es", object);
+            String [] partes = object.split(",");
+            latitud = partes[0];
+             longitud = partes[1];
+            Log.d(latitud, longitud);
+
+            double lat = Double.parseDouble(latitud);
+            double lon = Double.parseDouble(longitud);
+
+            LatLng coordenada = new LatLng(lat, lon);
+
+            setMarker(coordenada, " ", " ");
+
+        }
+
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 
-        setMarker(coordenadasTeuchitlan, "Expo Guadalajara", "Centro de Convenciones");
-
-        setMarker(plazaTeuchitlan, "Plaza Municipal de Teuchitlan", " ");
-
-        setMarker(piramideMenorGuachimontones, "Piramide Menor", " ");
-
-        setMArkerVisited(rioTeuchitlan, "Rio de Teuchitlan", " ");
-
-        setMArkerCurrentPlace(casaCultura, "Casa de Cultura", " ");
-
-
-
+        //setMarker(coordenadasTeuchitlan, "Expo Guadalajara", "Centro de Convenciones");
+        //setMarker(plazaTeuchitlan, "Plaza Municipal de Teuchitlan", " ");
+        //setMarker(piramideMenorGuachimontones, "Piramide Menor", " ");
+        //setMArkerVisited(rioTeuchitlan, "Rio de Teuchitlan", " ");
+        //setMArkerCurrentPlace(casaCultura, "Casa de Cultura", " ");
 
         mMap.setMyLocationEnabled(true);
 
@@ -175,8 +241,8 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
                 .position(posicion)
-                .title(titulo)
-                .snippet(info)
+                //.title(titulo)
+                //.snippet(info)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconblue_resized)));
     }
 
@@ -207,6 +273,32 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+
+    public boolean conectadoInternet() {
+
+        ConnectivityManager cm;
+        NetworkInfo ni;
+        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ni = cm.getActiveNetworkInfo();
+        boolean conexion = false;
+
+        if (ni != null) {
+            ConnectivityManager connManager1 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mWifi = connManager1.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+            ConnectivityManager connManager2 = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mMobile = connManager2.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+
+            if (mWifi.isConnected() || mMobile.isConnected()) {
+                conexion = true;
+            }
+        } else {
+            conexion = false;
+        }
+        return conexion;
     }
 
 
