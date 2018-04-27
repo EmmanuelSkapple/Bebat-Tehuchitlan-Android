@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -57,15 +56,17 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
     private DatabaseReference mDatabase, referencia;
 
-    Intent i = getIntent();
-    ArrayList <String> ubicacionesBeacons = new ArrayList<String>();
+
      String ubicacion;
      String latitud;
      String longitud;
      String [] partes;
-     int counter = 0;
+     String estado;
 
+     int counterBeacons = 0;
+     //beaconsData beacons[] = new beaconsData[];
 
+    ArrayList <String[]> ubicacionesBeacons = new ArrayList<String[]>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,22 +80,11 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapChild : dataSnapshot.getChildren()){
 
-                        //Log.d("la ubicacion es: ", snapChild.child("ubicacion").getValue().toString());
+                        String[] arreglo=new String[2];
 
-
-                        ubicacion = snapChild.child("ubicacion").getValue().toString();
-
-                        ubicacionesBeacons.add(ubicacion);
-
-                        //counter++;
-
-
-
-
-                        /*String [] partes = ubicacion.split(",");
-                        latitud = partes[0];
-                        longitud = partes[1];
-                        Log.d(latitud, longitud);*/
+                        arreglo[0] = snapChild.child("ubicacion").getValue().toString();
+                        arreglo[1]=  snapChild.child("referencia").getValue().toString();
+                        ubicacionesBeacons.add(arreglo);
                     }
                 }
 
@@ -169,11 +159,10 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
             return;
         }
 
-        for (String object: ubicacionesBeacons) {
-            //Log.d("la ubicacion es", object);
-            String [] partes = object.split(",");
+        for (String[] object: ubicacionesBeacons) {
+            String [] partes = object[0].split(",");
             latitud = partes[0];
-             longitud = partes[1];
+            longitud = partes[1];
             Log.d(latitud, longitud);
 
             double lat = Double.parseDouble(latitud);
@@ -181,17 +170,17 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
             LatLng coordenada = new LatLng(lat, lon);
 
-            setMarker(coordenada, " ", " ");
+
+            if (object[1].equals("visitado")) {
+                setMArkerVisited(coordenada," "," ");
+            }
+            else if(object[1].equals("no visitado")){
+                setMarker(coordenada);
+            }
 
         }
 
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
-        //setMarker(coordenadasTeuchitlan, "Expo Guadalajara", "Centro de Convenciones");
-        //setMarker(plazaTeuchitlan, "Plaza Municipal de Teuchitlan", " ");
-        //setMarker(piramideMenorGuachimontones, "Piramide Menor", " ");
-        //setMArkerVisited(rioTeuchitlan, "Rio de Teuchitlan", " ");
-        //setMArkerCurrentPlace(casaCultura, "Casa de Cultura", " ");
 
         mMap.setMyLocationEnabled(true);
 
@@ -237,12 +226,10 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     }
 
 
-    private void setMarker(LatLng posicion, String titulo, String info) {
+    private void setMarker(LatLng posicion) {
 
         Marker myMarker = mMap.addMarker(new MarkerOptions()
                 .position(posicion)
-                //.title(titulo)
-                //.snippet(info)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.beaconblue_resized)));
     }
 
@@ -302,5 +289,26 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     }
 
 
+}
 
+class beaconsData{
+
+    private String estado;
+    private String coordenadas;
+
+    public String getEstados(){
+        return estado;
+    }
+
+    public void setEstado(String estado){
+        this.estado = estado;
+    }
+
+    public String getCoordenadas(){
+        return coordenadas;
+    }
+
+    public void setCoordenadas(String coordenadas){
+        this.coordenadas = coordenadas;
+    }
 }
