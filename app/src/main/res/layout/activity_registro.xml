@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.adan.teuchitlan.Registro">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cajas"
+            android:background="@mipmap/backgroundimagen"
+            android:paddingTop="200dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/emailTxt"
+                android:layout_width="252dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="email"
+                android:textColor="#F2F2F2"
+                android:theme="@style/colorBlancoAzul"
+                android:layout_gravity="center_horizontal"
+                android:inputType="textEmailAddress"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="232dp" />
+
+            <EditText
+                android:id="@+id/passTxt"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:textColor="#F2F2F2"
+                android:theme="@style/colorBlancoAzul"
+                android:hint="password"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="319dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnregistro"
+            android:layout_width="254dp"
+            android:layout_height="wrap_content"
+            android:text="Registrarse"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="65dp"
+            android:layout_below="@id/cajas"
+            />
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

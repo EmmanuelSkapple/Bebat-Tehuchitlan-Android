@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.adan.teuchitlan.Login">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/cajasEmail"
+            android:background="@mipmap/backgroundimagen2"
+            android:paddingTop="200dp"
+            >
+
+            <EditText
+                android:id="@+id/txtCorreo"
+                android:layout_width="252dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="email"
+                android:textColor="#F2F2F2"
+                android:theme="@style/colorBlancoAzul"
+                android:layout_gravity="center_horizontal"
+                android:inputType="textEmailAddress"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="232dp" />
+
+            <EditText
+                android:id="@+id/txtPass"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:textColor="#F2F2F2"
+                android:theme="@style/colorBlancoAzul"
+                android:hint="password"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="319dp" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="254dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="19dp"
+                android:layout_marginTop="5dp"
+                android:text="Ingresar"
+                tools:layout_editor_absoluteX="65dp"
+                tools:layout_editor_absoluteY="392dp" />
+
+
+
+
+        </LinearLayout>
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@id/cajasEmail"
+            />
+        <TextView
+            android:id="@+id/registrarse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="Crear cuenta"
+            android:layout_below="@id/login_button"/>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

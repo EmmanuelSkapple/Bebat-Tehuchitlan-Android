@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="colorBlancoAzul" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/blancoFondo</item>
+        <item name="colorControlActivated">#28C9CE</item>
+        <item name="android:textColorHighlight">#F90003</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
