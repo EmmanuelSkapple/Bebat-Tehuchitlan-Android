@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         btnQueHacer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), queHacer.class);
+                Intent intent = new Intent(getApplicationContext(), QueHacerTabMainActivity.class);
                 startActivityForResult(intent,0);
             }
         });

@@ -44,11 +44,15 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".mapsTeuchitlan"
-            android:label="@string/title_activity_maps_teuchitlan"></activity>
+            android:label="@string/title_activity_maps_teuchitlan" />
+        <activity
+            android:name=".QueHacerTabMainActivity"
+            android:label="@string/title_activity_que_hacer_tab_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

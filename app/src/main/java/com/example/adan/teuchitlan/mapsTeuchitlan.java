@@ -47,35 +47,26 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     private static final int LOCATION_REQUEST_CODE = 101;
 
     private static final LatLng coordenadasTeuchitlan = new LatLng(20.685499, -103.847768);
-    private static final LatLng plazaTeuchitlan = new LatLng(20.683778, -103.847250);
-    private static final LatLng piramideMenorGuachimontones = new LatLng(20.694792, -103.836523);
-    private static final LatLng rioTeuchitlan = new LatLng(20.686091, -103.843438);
-    private static final LatLng casaCultura = new LatLng(20.683610, -103.848356);
-
-    private Marker mPlazaTeuchitlan;
 
     private DatabaseReference mDatabase, referencia;
 
-
-     String ubicacion;
      String latitud;
      String longitud;
-     String [] partes;
-     String estado;
-
-     int counterBeacons = 0;
-     //beaconsData beacons[] = new beaconsData[];
 
     ArrayList <String[]> ubicacionesBeacons = new ArrayList<String[]>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();  //se crean referencias a la base de datos
         referencia = mDatabase.child("Teuchitlan/beacons");
 
-        if(conectadoInternet()){
-            referencia.addListenerForSingleValueEvent(new ValueEventListener() {
+        if(conectadoInternet()){    //se verifica que el dispositivo este conectado a internet
+
+            referencia.addListenerForSingleValueEvent(new ValueEventListener(){
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapChild : dataSnapshot.getChildren()){
@@ -251,7 +242,6 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
     }
 
 
-
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -291,24 +281,3 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
 
 }
 
-class beaconsData{
-
-    private String estado;
-    private String coordenadas;
-
-    public String getEstados(){
-        return estado;
-    }
-
-    public void setEstado(String estado){
-        this.estado = estado;
-    }
-
-    public String getCoordenadas(){
-        return coordenadas;
-    }
-
-    public void setCoordenadas(String coordenadas){
-        this.coordenadas = coordenadas;
-    }
-}
