@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,27 +24,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-
+import android.widget.ImageView;
+import android.widget.Toast;
+import com.estimote.coresdk.recognition.packets.EstimoteLocation;
+import com.estimote.coresdk.service.BeaconManager;
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.estimote.coresdk.observation.region.RegionUtils;
 import com.estimote.coresdk.observation.utils.Proximity;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
     private boolean notificationAlreadyShown = false;
+    String usuario;
+    Operaciones op=new Operaciones();
+    ArrayList<sitioHistorico> listaSitiosHistoricos=new ArrayList<sitioHistorico>();
+    ArrayList<Lugar> listLugares=new ArrayList<Lugar>();
+    ArrayList<Beacon>listaBeacons=new ArrayList<Beacon>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +64,25 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         Button btnMapaProgreso = (Button)findViewById(R.id.button);
+        ImageView fotoPerfil=(ImageView)findViewById(R.id.circle_image);
+        Intent i=this.getIntent();
+        listaBeacons=getIntent().getParcelableArrayListExtra("beacons");
+        listaSitiosHistoricos=getIntent().getParcelableArrayListExtra("sitios");
+        listLugares=getIntent().getParcelableArrayListExtra("lugares");
+        Log.d("entro a main","activity");
+        Log.d("lista beacons",listaBeacons.get(1).ubicacion.toString());
+        Log.d("lista lugares","size() "+listLugares.size());
+        Log.d("lista sitios",listaSitiosHistoricos.get(1).nombre.toString());
+
+        Intent iService=new Intent(getApplicationContext(),beaconService.class);
+        iService.putParcelableArrayListExtra("listaSitios",listaSitiosHistoricos);
+        startService(iService);
         btnMapaProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), mapaProgreso.class);
+                Intent intent = new Intent(getApplicationContext(), mapsTeuchitlan.class);
                 startActivityForResult(intent,0);
             }
         });
@@ -83,7 +109,8 @@ public class MainActivity extends AppCompatActivity
         btnQueHacer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), queHacer.class);
+                Intent intent = new Intent(getApplicationContext(), QueHacerTabMainActivity.class);
+                intent.putParcelableArrayListExtra("lugares",listLugares);
                 startActivityForResult(intent,0);
             }
         });
@@ -155,7 +182,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), beaconActual.class);
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(getApplicationContext(), queHacer.class);
+            Intent intent = new Intent(getApplicationContext(), QueHacerTabMainActivity.class);
+            intent.putParcelableArrayListExtra("lugares",listLugares);
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_share) {
 
@@ -168,29 +196,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void showNotification(String title, String message, Bitmap bMap,String color) {
 
-        if (notificationAlreadyShown) { return; }
 
-        Intent notifyIntent = new Intent(this, InformacionBeacon.class);
-        notifyIntent.putExtra("beacon",color);
-        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivities(this, 0,
-                new Intent[] { notifyIntent }, PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.d("xxxxx","entro a showNoti");
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(bMap)
-                .setContentTitle(title + color)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);
-        notificationAlreadyShown = true;
-    }
 
 }

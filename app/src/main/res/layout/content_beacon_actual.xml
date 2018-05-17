@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/mazamitla"
+                android:id="@+id/imagen_portada"
+
                 android:fitsSystemWindows="true"/>
 
             <android.support.v7.widget.Toolbar
@@ -74,7 +75,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/info_text"
+                    android:id="@+id/dato_cultural_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_beacon"/>
@@ -101,7 +102,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/info_text2"
+                        android:id="@+id/dato_historico_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/item_beacon"/>
