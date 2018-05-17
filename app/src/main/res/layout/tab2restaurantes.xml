@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="aqui van todas las atracciones"
+        android:text="aqui van todos los restaurantes"
         android:textColor="@color/colorAccent"/>
 
 </LinearLayout>

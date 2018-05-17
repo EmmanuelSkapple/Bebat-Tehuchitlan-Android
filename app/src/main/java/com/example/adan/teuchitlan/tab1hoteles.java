@@ -12,18 +12,18 @@ import io.reactivex.annotations.Nullable;
  * Created by robert on 4/30/18.
  */
 
-public class tab3atracciones extends Fragment {
+public class tab1hoteles extends Fragment {
 
     View v;
 
-    public tab3atracciones(){
+    public tab1hoteles(){
     }
 
     @Nullable
     @Override
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle saveInstanceState){
-        v = inflater.inflate(R.layout.tab3atracciones, container, false);
+        v = inflater.inflate(R.layout.tab1hoteles, container, false);
         return v;
     }
 }
