@@ -2,6 +2,9 @@ package com.example.adan.teuchitlan;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by adan on 9/04/18.
@@ -67,5 +70,40 @@ public class sitioHistorico implements Parcelable{
         parcel.writeString(imagenes);
         parcel.writeString(key);
         parcel.writeString(nombre);
+    }
+
+    public ArrayList<String> arrayImagenes(){
+        char[ ] recibirArray=imagenes.toCharArray();
+        String StringN="";
+        Log.d("entro a deparar","imagenes");
+        int aux=0;
+        ArrayList<String> ArrayFg=new ArrayList<String>();
+        for (int i = 0; i < recibirArray.length; i++) {
+            if(recibirArray[i] =='~'){
+                for (int j = i+1; j < recibirArray.length; j++) {
+                    if(j==100||j==185||j==189){
+                        Log.d("el for de j "," va en "+j+"de "+recibirArray.length+", su letra es "+recibirArray[j] );
+                    }
+                    aux=j;
+                    if(recibirArray[j]!='~'){
+                        StringN += recibirArray[j];
+                    }
+                    else if (recibirArray[j]=='~'&&j!=0||j+1==recibirArray.length) {
+                        Log.d("entro al else","para separar imagen j es "+j+" y letra es "+recibirArray[j]);
+                        ArrayFg.add(StringN);
+                        StringN="";
+                    }
+                }
+                Log.d("el for j"," termino y el valor de aux es "+aux+" el valor de length "+recibirArray.length);
+
+                if(aux==recibirArray.length-1){
+                    ArrayFg.add(StringN);
+                    Log.d("completo", "el algoritmo de imagenes");
+                    return  ArrayFg;
+                }
+            }
+        }
+        return ArrayFg;
+
     }
 }

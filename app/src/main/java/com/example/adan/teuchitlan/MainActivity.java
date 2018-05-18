@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent iService=new Intent(getApplicationContext(),beaconService.class);
         iService.putParcelableArrayListExtra("listaSitios",listaSitiosHistoricos);
+        iService.putParcelableArrayListExtra("beacons",listaBeacons);
         startService(iService);
         btnMapaProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +102,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), beaconActual.class);
+                intent.putParcelableArrayListExtra("listaSitios",listaSitiosHistoricos);
+                intent.putParcelableArrayListExtra("beacons",listaBeacons);
+                intent.putExtra("sitioEspecifico",0 );
+                intent.putExtra("servicio",0);
                 startActivityForResult(intent,0);
             }
         });

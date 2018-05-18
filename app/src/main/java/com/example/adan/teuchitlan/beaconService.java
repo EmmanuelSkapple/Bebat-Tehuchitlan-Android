@@ -4,25 +4,16 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +23,8 @@ import java.util.List;
 
 public class beaconService extends Service {
     ArrayList<sitioHistorico> lista=new ArrayList<sitioHistorico>();
+    ArrayList<Beacon>listaBeacons=new ArrayList<Beacon>();
+    ArrayList<String> idBeacons=new ArrayList<String>();
     BeaconManager beaconManager;
     Bitmap img;
     private boolean notificationAlreadyShown = false;
@@ -39,34 +32,41 @@ public class beaconService extends Service {
 
     public void onCreate(){
         Log.i("service","creando hilo");
-    onStartCommand();
+
 
     }
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i("service","entrar a OnBind");
+
         return null;
     }
 
 
-    public void onStartCommand() {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         try{
-        beaconManager = new BeaconManager(getApplicationContext());
+
+            Intent i=intent;
+            listaBeacons=i.getParcelableArrayListExtra("beacons");
+            lista=i.getParcelableArrayListExtra("listaSitios");
+            for(Beacon item: listaBeacons){
+                idBeacons.add(item.id);
+            }
+
+                beaconManager = new BeaconManager(getApplicationContext());
         EstimoteSDK.initialize(getApplicationContext(), "<teuchitlan-84i>", "<4f94bfb6df0d2b5ddff8c4d4b66ef73e>");
             Log.d("entro a onStart ", "comienza el scanner");
             beaconManager.setLocationListener(new BeaconManager.LocationListener() {
-           /* URL url = new URL("https://firebasestorage.googleapis.com/v0/b/teuchiapp.appspot.com/o/teuchitlan%2FSitiosHistoricos%2F45d03659c581aae20463a91b45e1e6b9.png?alt=media&token=4e6f81a1-bc0a-430f-a2dc-9ebad48e3cab");
-            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());*/
             @Override
             public void onLocationsFound(List<EstimoteLocation> beacons) {
                 for (EstimoteLocation beacon : beacons) {
-                    // int indiceContenedor = valoresIds.indexOf(beacon.id.toString());
-                    Log.d("becon detectado", beacon.id.toString());
-                    showNotification("beacon encontrado", "bienvenido a ","azul" );
-                    //  Log.d(" el inidce es  : ", Integer.toString(indiceContenedor));
-                    //  if (indiceContenedor != -1 ) {
-                    //   Log.d("detectado esta en bd : ", beacon.id.toString());
-                    //  obtenerLugarHistorico(valoresIds.get(indiceContenedor));
-
+                    int indiceContenedor = idBeacons.indexOf(beacon.id.toString());
+                    Log.d("becon detectado", beacon.id.toString()+" indice "+indiceContenedor);
+                    if (indiceContenedor != -1) {
+                        Log.d("detectado esta en bd : ", beacon.id.toString());
+                        encontrarSitio(beacon.id.toString());
+                        break;
+                    }
                 }
 
             }
@@ -78,18 +78,34 @@ public class beaconService extends Service {
                 beaconManager.startLocationDiscovery();
             }
         });
+
+
     }catch(Exception e){
 
     }
-
+        return flags;
     }
 
-    public void showNotification(String title, String message,  String color) {
+    public void encontrarSitio(String id){
+        for(sitioHistorico item: lista){
+            if(item.idBeacon.equals(id)){
+
+                showNotification("beacon encontrado", "bienvenido a "+item.nombre, "azul",item);
+                break;
+            }
+        }
+    }
+
+    public void showNotification(String title, String message,  String color, sitioHistorico sitio) {
 
         if (notificationAlreadyShown) { return; }
 
         Intent notifyIntent = new Intent(this, beaconActual.class);
-
+        notifyIntent.putParcelableArrayListExtra("listaSitios",lista);
+        notifyIntent.putParcelableArrayListExtra("beacons",listaBeacons);
+        notifyIntent.putExtra("sitioEspecifico",sitio );
+        notifyIntent.putExtra("servicio",1);
+        Log.d("el nombre es ",message);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0,
                 new Intent[] { notifyIntent }, PendingIntent.FLAG_UPDATE_CURRENT);

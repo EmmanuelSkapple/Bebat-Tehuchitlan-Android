@@ -1,6 +1,7 @@
 package com.example.adan.teuchitlan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -32,42 +33,30 @@ import java.util.concurrent.Executors;
 
 public class beaconActual extends AppCompatActivity {
 
-    private DatabaseReference mDatabase, referencia;
+
     ArrayList<String> valoresIds=new ArrayList<String>();
+    ArrayList<Beacon> listaBeacons=new ArrayList<Beacon>();
+    ArrayList<sitioHistorico>listaSitios=new ArrayList<sitioHistorico>();
+    ArrayList<String>fotos=new ArrayList<String>();
+    sitioHistorico sitioBeacon;
     BeaconManager beaconManager;
     String imagenes;
-    boolean ban=false;
-    boolean banBeaconManager=true;
-    private ExecutorService executor;
     boolean ui=true;
-    Operaciones operacion=new Operaciones();
+    int service;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_beacon_actual);
-        executor= Executors.newFixedThreadPool(2);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        referencia= mDatabase.child("Teuchitlan/beacons");
-       // cambiarImg();
-        if(operacion.conectadoInternet(this)) {
-            referencia.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapChild : dataSnapshot.getChildren()) {
-                        Log.d("xxxxxxxxxxxxxxxxxxxx", snapChild.child("id").getValue().toString());
-
-                        valoresIds.add(snapChild.child("id").getValue().toString());
-                    }
-                    ban=true;
-                }
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+        Intent i=getIntent();
+        listaSitios=getIntent().getParcelableArrayListExtra("listaSitios");
+        listaBeacons=getIntent().getParcelableArrayListExtra("beacons");
+        Bundle b= i.getExtras();
+        service=(int) b.get("servicio");
+        for(Beacon item: listaBeacons){
+            valoresIds.add(item.id);
         }
+
     }
 
     private void cambiarImg(String imgUrl){
@@ -78,34 +67,43 @@ public class beaconActual extends AppCompatActivity {
         }catch(Exception e){}
     }
 
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        beaconManager = new BeaconManager(getApplicationContext());
+        if (service == 0){
+
+            beaconManager = new BeaconManager(getApplicationContext());
         EstimoteSDK.initialize(getApplicationContext(), "<teuchitlan-84i>", "<4f94bfb6df0d2b5ddff8c4d4b66ef73e>");
         beaconManager.setLocationListener(new BeaconManager.LocationListener() {
             @Override
             public void onLocationsFound(List<EstimoteLocation> beacons) {
 
-                if(ban && banBeaconManager) {
-                    for (EstimoteLocation beacon : beacons) {
-                        int indiceContenedor = valoresIds.indexOf(beacon.id.toString());
-                        Log.d("becon detectado",beacon.id.toString());
-                        Log.d(" el inidce es  : ", Integer.toString(indiceContenedor));
-                        if (indiceContenedor != -1 ) {
-                            Log.d("detectado esta en bd : ", beacon.id.toString());
-                            obtenerLugarHistorico(valoresIds.get(indiceContenedor));
-
-                        }
-
+                for (EstimoteLocation beacon : beacons) {
+                    int indiceContenedor = valoresIds.indexOf(beacon.id.toString());
+                    Log.d("becon detectado", beacon.id.toString());
+                    if (indiceContenedor != -1) {
+                        Log.d("detectado esta en bd : ", beacon.id.toString());
+                        encontrarSitio(beacon.id.toString());
+                        break;
                     }
+
                 }
+
             }
         });
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback(){
-            @Override public void onServiceReady() {
+        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
                 beaconManager.startLocationDiscovery();
             }
         });
+    }
+    else{   //entra directo desde el service
+
+            Bundle b= getIntent().getExtras();
+            sitioBeacon=(sitioHistorico)b.get("sitioEspecifico");
+            fotos=sitioBeacon.arrayImagenes();
+            actualizarUi(fotos,sitioBeacon);
+        }
 
 
     }
@@ -113,46 +111,22 @@ public class beaconActual extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
-        beaconManager.disconnect();
+        if(service==0) {
+            beaconManager.disconnect();
+        }
     }
 
-    public void obtenerLugarHistorico(String idBeacon) {
-        imagenes="";
-        Log.d("tag", "entro a obtener lugar" + idBeacon);
-        if (operacion.conectadoInternet(this)) {
-
-            final String idB = idBeacon;
-            referencia = mDatabase.child("Teuchitlan/SitiosHistoricos");
-            referencia.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapChild : dataSnapshot.getChildren()) {
-                        Log.d("tag", idB+" entro a obtener lugar en onDataChange");
-                        Log.d("tag",  "becon de lugar en DB "+snapChild.child("idBeacon").getValue().toString());
-
-                        if (idB.equals(snapChild.child("idBeacon").getValue().toString())) {
-                            Log.d("tag","los id son iguales");
-                            sitioHistorico sh = new sitioHistorico(snapChild.child("datoCultural").getValue().toString(), snapChild.child("datoCurioso").getValue().toString(),
-                                    snapChild.child("datoHistorico").getValue().toString(), snapChild.child("datoInteres").getValue().toString(), snapChild.child("id").getValue().toString(),
-                                    snapChild.child("idBeacon").getValue().toString(), snapChild.child("imagenes").getValue().toString(),
-                                    snapChild.child("key").getValue().toString(), snapChild.child("nombre").getValue().toString());
-                            Log.d("zzzzzzzz", sh.toString());
-                            imagenes = snapChild.child("imagenes").getValue().toString();
-                            arrayImagenes(imagenes.toCharArray(),sh);
-
-                        }
-                    }
-                }
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            }//termina if
-
+    public void encontrarSitio(String id){
+        for(sitioHistorico item: listaSitios){
+            if(item.idBeacon.equals(id)){
+                fotos=item.arrayImagenes();
+                actualizarUi(fotos,item);
+                break;
+            }
+        }
     }
+
+
 
     public void arrayImagenes(char[] recibirArray,sitioHistorico sitio){
         String StringN="";
