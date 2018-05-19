@@ -2,34 +2,22 @@ package com.example.adan.teuchitlan;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
-import com.estimote.coresdk.observation.region.RegionUtils;
-import com.estimote.coresdk.observation.utils.Proximity;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 public class beaconActual extends AppCompatActivity {
 
@@ -49,6 +37,10 @@ public class beaconActual extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_beacon_actual);
         Intent i=getIntent();
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listaSitios=getIntent().getParcelableArrayListExtra("listaSitios");
         listaBeacons=getIntent().getParcelableArrayListExtra("beacons");
         Bundle b= i.getExtras();
@@ -62,7 +54,6 @@ public class beaconActual extends AppCompatActivity {
     private void cambiarImg(String imgUrl){
         try {
             ImageView img = (ImageView) findViewById(R.id.imagen_portada);
-           // String imgUrl="https://cdn.images.express.co.uk/img/dynamic/20/590x/secondary/brigette-lundy-paine-atypical-1034740.jpg";
             new DownLoadImageTask(img).execute(imgUrl);
         }catch(Exception e){}
     }
@@ -173,6 +164,11 @@ public class beaconActual extends AppCompatActivity {
         TextView historico=(TextView)findViewById(R.id.dato_historico_text);
         cultural.setText(sitioH.datoCultural);
         historico.setText(sitioH.datoHistorico);
+
+        HorizontalInfiniteCycleViewPager pager = (HorizontalInfiniteCycleViewPager)findViewById(R.id.horizontal_cycle);
+        AdapterCarousel adapter = new AdapterCarousel(imgs,getBaseContext());
+        Log.d("cantidad imagenes ",Integer.toString( adapter.getCount()));
+        pager.setAdapter(adapter);
     }
 }
 

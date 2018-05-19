@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,7 @@ public class QueHacerTabMainActivity extends AppCompatActivity {
         Intent i=this.getIntent();
         listaLugares=getIntent().getParcelableArrayListExtra("lugares");
 
+        Log.d("entro a tabQue hacer","enviara intent");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_que_hacer_tab_main);
 
@@ -40,6 +42,7 @@ public class QueHacerTabMainActivity extends AppCompatActivity {
         adapter   = new ViewPagerAdapter(getSupportFragmentManager());
 
         //agrega los fragment
+        getIntent().putParcelableArrayListExtra("listaHoteles",listaLugares);
         adapter.AddFragment(new tab1hoteles(), "");
         adapter.AddFragment(new tab2restaurantes(), "");
         adapter.AddFragment(new tab3atracciones(), "");
