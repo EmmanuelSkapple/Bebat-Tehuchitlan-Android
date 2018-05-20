@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), mapsTeuchitlan.class);
+                intent.putParcelableArrayListExtra("beaconsRegistrados",listaBeacons);
                 startActivityForResult(intent,0);
             }
         });
@@ -203,7 +204,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Intent intent = new Intent(getApplicationContext(), mapaProgreso.class);
+            Intent intent = new Intent(getApplicationContext(), mapsTeuchitlan.class);
+            intent.putParcelableArrayListExtra("beaconsRegistrados",listaBeacons);
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(getApplicationContext(), progreso.class);

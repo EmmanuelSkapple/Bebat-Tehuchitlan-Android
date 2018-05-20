@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:id="@+id/textView2"
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="aqui van todos los hoteles"
-        android:textColor="@color/colorAccent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/tab1hotel_recyclerview"></android.support.v7.widget.RecyclerView>
 </LinearLayout>
