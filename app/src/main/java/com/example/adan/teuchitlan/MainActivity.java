@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,10 +70,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().hide();
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         Log.d("el usuario no", "registrado" + user.getEmail()+" nombre "+user.getDisplayName());
 
-        Button btnMapaProgreso = (Button)findViewById(R.id.button);
+        ImageButton btnMapaProgreso = (ImageButton)findViewById(R.id.button);
         Intent i=this.getIntent();
         listaBeacons=getIntent().getParcelableArrayListExtra("beacons");
         listaSitiosHistoricos=getIntent().getParcelableArrayListExtra("sitios");
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Button btnProgreso = (Button)findViewById(R.id.button2);
+        ImageButton btnProgreso = (ImageButton)findViewById(R.id.button4);
         btnProgreso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Button btnBeaconActual = (Button)findViewById(R.id.button3);
+        ImageButton btnBeaconActual = (ImageButton)findViewById(R.id.button3);
         btnBeaconActual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Button btnQueHacer = (Button)findViewById(R.id.button4);
+        ImageButton btnQueHacer = (ImageButton)findViewById(R.id.button2);
         btnQueHacer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

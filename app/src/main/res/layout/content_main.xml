@@ -1,67 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.adan.teuchitlan.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+    android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.example.adan.teuchitlan.MainActivity"
+        tools:showIn="@layout/app_bar_main">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:id="@+id/button"
+                    android:src="@mipmap/uno" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:id="@+id/button2"
+                    android:src="@mipmap/dos" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:id="@+id/button3"
+                    android:src="@mipmap/tres" />
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:id="@+id/button4"
+                    android:src="@mipmap/cuatro" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
 
-    <RelativeLayout
-        android:layout_width="387dp"
-        android:layout_height="538dp"
-        android:background="@color/cardview_dark_background"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="190dp"
-            android:layout_height="270dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:text="Mapa Progreso"
-            android:textColor="@color/colorAccent" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="190dp"
-            android:layout_height="270dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:text="Progreso"
-            android:textColor="@color/colorAccent" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="190dp"
-            android:layout_height="270dp"
-
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@android:color/transparent"
-            android:text="Beacon Actual"
-            android:textColor="@color/colorAccent" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="190dp"
-            android:layout_height="270dp"
-
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@android:color/transparent"
-            android:text="Que Hacer"
-            android:textColor="@color/colorAccent" />
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
