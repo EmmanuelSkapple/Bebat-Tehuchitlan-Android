@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,10 +22,11 @@ public class SplashScreen extends AppCompatActivity implements OnTaskCompleted{
 
     String s="";
     private OnTaskCompleted taskCompleted;
-    private DatabaseReference mDatabase, referencia,referencia2,referencia3;
+    private DatabaseReference mDatabase, referencia,referencia2,referencia3,referencia4;
     ArrayList<sitioHistorico> listaSitiosHistoricos=new ArrayList<sitioHistorico>();
     ArrayList<Beacon> beacons=new ArrayList<Beacon>();
     ArrayList<Lugar>lugares=new ArrayList<Lugar>();
+    ArrayList<String>beaconsVisitados=new ArrayList<>();
     Operaciones o=new Operaciones();
     private int bandera=-1;
     private int bandera2=-1;
@@ -31,20 +34,22 @@ public class SplashScreen extends AppCompatActivity implements OnTaskCompleted{
     private int cantidadSnaps=0;
     private int cantidadSnaps2=0;
     private int cantidadSnaps3=0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         Log.d("entro a ", "splash");
-
-       // DataSyncFb task= new DataSyncFb(SplashScreen.this);
-        //task.execute();
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         try {
             if(o.conectadoInternet(this)){
+
             mDatabase = FirebaseDatabase.getInstance().getReference();
             referencia = mDatabase.child("Teuchitlan/SitiosHistoricos");
             referencia2 = mDatabase.child("Teuchitlan/beacons");
             referencia3 = mDatabase.child("Teuchitlan/lugares");
+            referencia4=mDatabase.child("Teuchitlan/Users/"+user.getUid()+"/BeaconsVisitados");
             referencia.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -121,6 +126,8 @@ public class SplashScreen extends AppCompatActivity implements OnTaskCompleted{
                 }
 
             });
+
+
         }
         else{
                 Toast.makeText(this,"No estas conectado a internet",Toast.LENGTH_LONG);
@@ -144,22 +151,14 @@ public class SplashScreen extends AppCompatActivity implements OnTaskCompleted{
             i.putParcelableArrayListExtra("lugares",lugares);
             i.putParcelableArrayListExtra("sitios",listaSitiosHistoricos);
 
+
             startActivity(i);
         }
     }
 
     @Override
     public void onTaskCompleted(ArrayList<Beacon> listaB) {
-        /*if(!listaB.isEmpty()) {
-            Intent i = new Intent(SplashScreen.this, MainActivity.class);
-            i.putParcelableArrayListExtra("beacons", listaB);
-            startActivity(i);
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"esta vacia",Toast.LENGTH_LONG).show();
 
-
-        }*/
     }
 }
 

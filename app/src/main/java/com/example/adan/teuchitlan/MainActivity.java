@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
@@ -41,12 +42,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     ArrayList<sitioHistorico> listaSitiosHistoricos=new ArrayList<sitioHistorico>();
     ArrayList<Lugar> listLugares=new ArrayList<Lugar>();
     ArrayList<Beacon>listaBeacons=new ArrayList<Beacon>();
+    ArrayList<String>beaconsVisitados=new ArrayList<String>();
 
 
     @Override
@@ -65,8 +70,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("el usuario no", "registrado" + user.getEmail()+" nombre "+user.getDisplayName());
+
         Button btnMapaProgreso = (Button)findViewById(R.id.button);
-        ImageView fotoPerfil=(ImageView)findViewById(R.id.circle_image);
         Intent i=this.getIntent();
         listaBeacons=getIntent().getParcelableArrayListExtra("beacons");
         listaSitiosHistoricos=getIntent().getParcelableArrayListExtra("sitios");
@@ -128,8 +134,29 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View view=navigationView.getHeaderView(0);
+        TextView t1=(TextView)view.findViewById(R.id.txt_nombre_usuario);
+        TextView t2=(TextView)view.findViewById(R.id.correo_usuario);
+        CircleImageView fotoPerfil=(CircleImageView)view.findViewById(R.id.circle_image);
+        if(user!=null){
+           Picasso.with(view.getContext()).load(user.getPhotoUrl()).into(fotoPerfil);
+          // fotoPerfil.setImageURI(user.getPhotoUrl());
+            t1.setText(user.getDisplayName());
+            t2.setText(user.getEmail());
+        }
 
 
+    }
+
+    private void cambiarImg(Uri imgUrl){
+        try {
+            Log.d("la url de imagen", " es "+imgUrl);
+            CircleImageView fotoPerfil=(CircleImageView)findViewById(R.id.circle_image);
+
+            Picasso.with(this).load(imgUrl).into(fotoPerfil);
+
+
+        }catch(Exception e){}
     }
 
     @Override
@@ -139,14 +166,10 @@ public class MainActivity extends AppCompatActivity
         SystemRequirementsChecker.checkWithDefaultDialogs(this);
     }
 
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
     }
 
     @Override
@@ -185,15 +208,19 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(getApplicationContext(), beaconActual.class);
+            intent.putParcelableArrayListExtra("listaSitios",listaSitiosHistoricos);
+            intent.putParcelableArrayListExtra("beacons",listaBeacons);
+            intent.putExtra("sitioEspecifico",0 );
+            intent.putExtra("servicio",0);
             startActivityForResult(intent,0);
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(getApplicationContext(), QueHacerTabMainActivity.class);
             intent.putParcelableArrayListExtra("lugares",listLugares);
             startActivityForResult(intent,0);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent i=new Intent(MainActivity.this,Login.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

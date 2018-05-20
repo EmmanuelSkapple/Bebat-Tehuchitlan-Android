@@ -13,6 +13,8 @@ import android.util.Log;
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,12 @@ public class beaconService extends Service {
 
     public void onCreate(){
         Log.i("service","creando hilo");
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        if(user==null){
+            Intent in=new Intent(getApplicationContext(),Login.class);
+            startActivity(in);
+            this.onDestroy();
+        }
 
 
     }

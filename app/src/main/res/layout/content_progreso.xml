@@ -14,14 +14,14 @@
             android:layout_height="538dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circle_image2"
+                    android:layout_width="@dimen/perfil_image_size"
+                    android:layout_height="@dimen/perfil_image_size"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="centerCrop"
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="Progreso"
-                    android:textSize="50sp" />
+                    app:border_color="@android:color/white"
+                    app:border_width="1dp" />
         </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

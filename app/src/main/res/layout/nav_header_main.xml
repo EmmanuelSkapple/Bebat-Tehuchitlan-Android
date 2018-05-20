@@ -16,23 +16,22 @@
         android:id="@+id/circle_image"
         android:layout_width="@dimen/perfil_image_size"
         android:layout_height="@dimen/perfil_image_size"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:scaleType="centerCrop"
-
+        android:layout_gravity="center_horizontal"
         app:border_color="@android:color/white"
-        app:border_width="1dp" />
+        app:border_width="0dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
+        android:id="@+id/txt_nombre_usuario"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+        android:id="@+id/correo_usuario" />
 
 </LinearLayout>

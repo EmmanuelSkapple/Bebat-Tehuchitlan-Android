@@ -1,6 +1,7 @@
 package com.example.adan.teuchitlan;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class progreso extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,7 +26,13 @@ public class progreso extends AppCompatActivity implements NavigationView.OnNavi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progreso);
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("el usuario no", "registrado" + user);
+        if(user!=null){
 
+            cambiarImg(user.getPhotoUrl());
+
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_progreso);
@@ -32,6 +44,16 @@ public class progreso extends AppCompatActivity implements NavigationView.OnNavi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_progreso);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+    private void cambiarImg(Uri imgUrl){
+        try {
+            Log.d("la url de imagen", " es "+imgUrl);
+            CircleImageView fotoPerfil=(CircleImageView)findViewById(R.id.circle_image2);
+
+            Picasso.with(this).load(imgUrl).into(fotoPerfil);
+
+
+        }catch(Exception e){}
     }
 
     @Override
@@ -74,10 +96,10 @@ public class progreso extends AppCompatActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(getApplicationContext(), queHacer.class);
             startActivityForResult(intent,0);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent i=new Intent(progreso.this,Login.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_progreso);

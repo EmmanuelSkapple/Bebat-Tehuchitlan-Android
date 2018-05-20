@@ -22,17 +22,12 @@
             android:title="Que Hacer" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
+    <item android:title="salir">
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
+                android:id="@+id/logout"
+                android:title="Salir" />
+
     </item>
 
 </menu>

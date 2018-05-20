@@ -22,6 +22,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 public class Login extends AppCompatActivity  implements View.OnClickListener{
     private static final String EMAIL = "email";
@@ -30,11 +37,14 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
     EditText password;
     TextView registro;
     CallbackManager callbackManager;
+    private DatabaseReference mDatabase,referenciaUsuario,referenciaUsuario2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
+
+        //getActionBar().hide();
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
         //botones
@@ -88,7 +98,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("xxx", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent=new Intent(Login.this,MainActivity.class);
+                            Intent intent=new Intent(Login.this,SplashScreen.class);
                             startActivity(intent);
 
                         } else {
@@ -116,7 +126,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             String name=user.getDisplayName();
             Toast.makeText(Login.this, "ingreso exitoso:"+name, Toast.LENGTH_SHORT).show();
 
-            Intent intent=new Intent(this,MainActivity.class);
+            Intent intent=new Intent(this,SplashScreen.class);
             startActivity(intent);
             // Toast.makeText(Login.this, "ingreso exitoso:"+email, Toast.LENGTH_SHORT).show();
         }
@@ -124,6 +134,11 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             Toast.makeText(Login.this, "registrate", Toast.LENGTH_SHORT).show();
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 
@@ -137,12 +152,12 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("xxx", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(Login.this,"ingreso exitoso",Toast.LENGTH_SHORT).show();
                             //updateUI(user);
-                            Intent intent=new Intent(Login.this,MainActivity.class);
-                            startActivity(intent);
+
+                            subirDatos(user);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("xxx", "signInWithCredential:failure", task.getException());
@@ -181,4 +196,33 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             startActivity(intent);
         }
     }
+
+    public void subirDatos(FirebaseUser user){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        referenciaUsuario=mDatabase.child("Teuchitlan/Users/"+user.getUid()+"/DatosPersonales");
+        referenciaUsuario.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Log.d("ingreso","el usuario ay existe");
+                }
+                else {
+                    Log.d("login class", " existe el child en bd");
+                    usuario u = new usuario(user.getUid(), user.getDisplayName(), "0", user.getEmail(), user.getPhoneNumber());
+                    Map<String, Object> person = u.toMap();
+                    referenciaUsuario.updateChildren(person);
+                }
+
+                Intent intent=new Intent(Login.this,SplashScreen.class);
+                startActivity(intent);
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
+

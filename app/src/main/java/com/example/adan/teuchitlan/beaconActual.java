@@ -1,12 +1,17 @@
 package com.example.adan.teuchitlan;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +19,16 @@ import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,17 +39,24 @@ public class beaconActual extends AppCompatActivity {
     ArrayList<Beacon> listaBeacons=new ArrayList<Beacon>();
     ArrayList<sitioHistorico>listaSitios=new ArrayList<sitioHistorico>();
     ArrayList<String>fotos=new ArrayList<String>();
+    ArrayList<String>beaconsVisitados=new ArrayList<String>();
     sitioHistorico sitioBeacon;
     BeaconManager beaconManager;
+    Dialog myDialog;
+
     String imagenes;
     boolean ui=true;
+    int ban=-1;
+    int cantidadSnaps=0;
     int service;
-
+    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference mDatabase, referencia,referencia2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_beacon_actual);
         Intent i=getIntent();
+        myDialog = new Dialog(this);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null)
@@ -117,45 +137,54 @@ public class beaconActual extends AppCompatActivity {
         }
     }
 
-
-
-    public void arrayImagenes(char[] recibirArray,sitioHistorico sitio){
-        String StringN="";
-        Log.d("entro a deparar","imagenes");
-        int aux=0;
-        ArrayList<String> ArrayFg=new ArrayList<String>();
-        for (int i = 0; i < recibirArray.length; i++) {
-            if(recibirArray[i] =='~'){
-                for (int j = i+1; j < recibirArray.length; j++) {
-                    if(j==100||j==185||j==189){
-                        Log.d("el for de j "," va en "+j+"de "+recibirArray.length+", su letra es "+recibirArray[j] );
-                    }
-                    aux=j;
-                    if(recibirArray[j]!='~'){
-                        StringN += recibirArray[j];
-                    }
-                    else if (recibirArray[j]=='~'&&j!=0||j+1==recibirArray.length) {
-                        Log.d("entro al else","para separar imagen j es "+j+" y letra es "+recibirArray[j]);
-                        ArrayFg.add(StringN);
-                        StringN="";
-                    }
+    public void comprobarBeacon(String idBeacon){
+        if(ban>=cantidadSnaps) {
+            if (beaconsVisitados.isEmpty()) {
+                if (service == 0) {
+                   // beaconManager.disconnect();
                 }
-                Log.d("el for j"," termino y el valor de aux es "+aux+" el valor de length "+recibirArray.length);
 
-                if(aux==recibirArray.length-1){
-                    ArrayFg.add(StringN);
-                    Log.d("completo", "el algoritmo de imagenes");
-                    break;
+                beaconsVisitados.add(idBeacon);
+                HashMap<String, Object> result = new HashMap<>();
+                result.put("idBeacon", idBeacon);
+                referencia.push().updateChildren(result);
+                mostrarPopUp();
+            } else {
+                if (beaconsVisitados.indexOf(idBeacon) == -1) {
+                    if (service == 0) {
+                       // beaconManager.disconnect();
+                    }
+                    beaconsVisitados.add(idBeacon);
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("idBeacon", idBeacon);
+                    referencia.push().updateChildren(result);
+                } else {
+
                 }
             }
         }
-
-        //banBeaconManager=true;
-
-        if(ui){
-            actualizarUi(ArrayFg,sitio);
-        }
     }
+
+    public void mostrarPopUp(){
+
+        TextView txtclose;
+        Button btnFollow;
+        myDialog.setContentView(R.layout.pop_up);
+        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        txtclose.setText("M");
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
+
+
+
+
 
     public void actualizarUi(ArrayList<String> imgs, sitioHistorico sitioH){
         ui=false;
@@ -169,6 +198,37 @@ public class beaconActual extends AppCompatActivity {
         AdapterCarousel adapter = new AdapterCarousel(imgs,getBaseContext());
         Log.d("cantidad imagenes ",Integer.toString( adapter.getCount()));
         pager.setAdapter(adapter);
+
+        String direccion="Teuchitlan/Users/"+user.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        referencia=mDatabase.child(direccion+"/BeaconsVisitados");
+        referencia.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                cantidadSnaps=(int) dataSnapshot.getChildrenCount();
+                ban=0;
+                Log.d("cantidad de snaps ",Integer.toString(cantidadSnaps));
+                if(dataSnapshot.exists()){
+
+                    for (DataSnapshot snapChild : dataSnapshot.getChildren()) {
+
+                        beaconsVisitados.add(snapChild.child("idBeacon").getValue().toString());
+                        ban++;
+                        comprobarBeacon(sitioH.idBeacon);
+                    }
+                }
+                if(cantidadSnaps==0){
+                    comprobarBeacon(sitioH.idBeacon);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }
 
