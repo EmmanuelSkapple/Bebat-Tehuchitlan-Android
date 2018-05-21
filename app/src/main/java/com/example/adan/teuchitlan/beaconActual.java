@@ -185,7 +185,7 @@ public class beaconActual extends AppCompatActivity {
             t2.setText(R.string.descripcion_logro);
             c.setImageResource(R.drawable.primera);
             t3.setText("1");
-            t4.setText(listaBeacons.size()-1);
+            t4.setText(Integer.toString(listaBeacons.size()-1));
             txtclose.setText("X");
             txtclose.setOnClickListener(new View.OnClickListener() {
                 @Override
