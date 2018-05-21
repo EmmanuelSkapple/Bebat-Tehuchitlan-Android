@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/verde_boton">
 
 
     <android.support.v7.widget.RecyclerView

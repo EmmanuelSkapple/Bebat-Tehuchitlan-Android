@@ -11,6 +11,7 @@
     <color name="black">#000000</color>
     <color name="gris">#90000000</color>
     <color name="gris_fondo">#e92b2a2a</color>
+    <color name="verde_boton">#13afa4</color>
 
     <integer-array name="initialcolors">
         <item>@color/bluelight</item>
