@@ -13,4 +13,20 @@
     <string name="facebook_app_id">1506737956102258</string>
     <string name="fb_login_protocol_scheme">fb1506737956102258</string>
     <string name="action_settings">Settings</string>
+    <string name="logro1">Tu primer Visita</string>
+    <string name="logro2">¡En hora buena!</string>
+    <string name="logro3">¡Todo un explorador!</string>
+    <string name="logro4">¡Completaste 10 diferentes lugares!</string>
+    <string name="logro5">¡Felicidades!</string>
+    <string name="descripcion_logro">Seguro estas deseando conocer más de Teuchitlán</string>
+    <string name="descripcion_logro2">Haz visitado 2 lugares de Teuchitlán, no te detengas</string>
+    <string name="descripcion_logro3">Sigues subiendo de nivel</string>
+    <string name="descripcion_logro4">Ya eres un experto</string>
+    <string name="descripcion_logro5">Haz explorado todo Teuchitlán,¿No te encantó?</string>
+
+
+
+
+
+
 </resources>

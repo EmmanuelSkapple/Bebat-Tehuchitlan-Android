@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class beaconActual extends AppCompatActivity {
 
@@ -148,7 +150,7 @@ public class beaconActual extends AppCompatActivity {
                 HashMap<String, Object> result = new HashMap<>();
                 result.put("idBeacon", idBeacon);
                 referencia.push().updateChildren(result);
-                mostrarPopUp();
+                mostrarPopUp(1);
             } else {
                 if (beaconsVisitados.indexOf(idBeacon) == -1) {
                     if (service == 0) {
@@ -158,6 +160,7 @@ public class beaconActual extends AppCompatActivity {
                     HashMap<String, Object> result = new HashMap<>();
                     result.put("idBeacon", idBeacon);
                     referencia.push().updateChildren(result);
+                    mostrarPopUp(beaconsVisitados.size());
                 } else {
 
                 }
@@ -165,21 +168,57 @@ public class beaconActual extends AppCompatActivity {
         }
     }
 
-    public void mostrarPopUp(){
+    public void mostrarPopUp(int numeroBeacons){
 
         TextView txtclose;
         Button btnFollow;
         myDialog.setContentView(R.layout.pop_up);
+        CircleImageView c=(CircleImageView)myDialog.findViewById(R.id.imagen_logro);
+        TextView t1=(TextView)myDialog.findViewById(R.id.txt_nombre_logro);
+        TextView t2=(TextView)myDialog.findViewById(R.id.txt_descripcion_logro);
+        TextView t3=(TextView)myDialog.findViewById(R.id.cantidad_visitada);
+        TextView t4=(TextView)myDialog.findViewById(R.id.cantidad_por_visitar);
+
         txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-        txtclose.setText("M");
-        txtclose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.dismiss();
-            }
-        });
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
+        if(numeroBeacons==1){
+            t1.setText(R.string.logro1);
+            t2.setText(R.string.descripcion_logro);
+            c.setImageResource(R.drawable.primera);
+            t3.setText("1");
+            t4.setText(listaBeacons.size()-1);
+            txtclose.setText("X");
+            txtclose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myDialog.dismiss();
+                }
+            });
+            myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myDialog.show();
+
+        }
+        if(numeroBeacons==2){
+            t1.setText(R.string.logro2);
+            t2.setText(R.string.descripcion_logro2);
+            c.setImageResource(R.drawable.dos);
+            t3.setText("2");
+            Log.d("vlor de valoresIds",Integer.toString(valoresIds.size()));
+            t4.setText(Integer.toString(valoresIds.size()-2));
+            txtclose.setText("X");
+            txtclose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myDialog.dismiss();
+                }
+            });
+            myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myDialog.show();
+
+        }
+
+
+
+
     }
 
 

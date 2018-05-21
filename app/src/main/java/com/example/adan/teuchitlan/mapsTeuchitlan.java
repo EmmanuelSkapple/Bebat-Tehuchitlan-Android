@@ -241,8 +241,8 @@ public class mapsTeuchitlan extends FragmentActivity implements OnMapReadyCallba
         Marker myMarkerCurrent = mMap.addMarker(new MarkerOptions()
                 .position(posicion)
                 .title(titulo)
-                .snippet(info)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.beacon_purple_current_place)));
+                .snippet(info));
+               // .icon(BitmapDescriptorFactory.fromResource(R.drawable.beacon_purple_current_place)));
     }
 
 

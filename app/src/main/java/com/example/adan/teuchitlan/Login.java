@@ -204,7 +204,7 @@ public class Login extends AppCompatActivity  implements View.OnClickListener{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    Log.d("ingreso","el usuario ay existe");
+                    Log.d("ingreso","el usuario ya existe");
                 }
                 else {
                     Log.d("login class", " existe el child en bd");

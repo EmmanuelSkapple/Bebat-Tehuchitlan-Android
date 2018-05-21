@@ -14,14 +14,51 @@
             android:layout_height="538dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circle_image2"
-                    android:layout_width="@dimen/perfil_image_size"
-                    android:layout_height="@dimen/perfil_image_size"
-                    android:layout_marginBottom="16dp"
-                    android:scaleType="centerCrop"
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="124dp"
+                    android:background="@mipmap/backgroundimagen2"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imagen_perfil_progreso"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="72dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher"
                     app:border_color="@android:color/white"
-                    app:border_width="1dp" />
+                    app:border_width="0dp" />
+
+                <TextView
+                    android:id="@+id/txt_usuario_progreso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imagen_perfil_progreso"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="15dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="ffg"
+                    android:paddingBottom="15dp"
+                    android:textSize="20dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_progreso"
+                    android:layout_width="2000dp"
+                    android:layout_height="300dp"
+                    android:layout_below="@+id/txt_usuario_progreso"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="23dp"
+                    android:scrollbars="vertical" />
+
         </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

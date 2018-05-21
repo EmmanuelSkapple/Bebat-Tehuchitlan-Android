@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="350dp"
-    android:layout_height="475dp"
-    android:background="@color/colorPrimaryDark"
+    android:layout_height="405dp"
+    android:background="#132660"
     android:padding="5dp"
     android:layout_gravity="center">
     <TextView
@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:src="@drawable/primera"
+            android:id="@+id/imagen_logro"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginBottom="10dp"
@@ -34,18 +34,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Elina Grofild"
+            android:text=""
+            android:id="@+id/txt_nombre_logro"
             android:textStyle="bold"
             android:textColor="@color/white"
+            android:textSize="22dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="15dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Montreal,Canada"
+            android:text=""
+            android:id="@+id/txt_descripcion_logro"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -63,14 +66,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="150"
+                android:text=""
+                android:id="@+id/cantidad_visitada"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Followers"
-                android:textSize="18sp"
+                android:text="Lugares visitados"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -84,14 +89,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="19"
+                android:text=""
+                android:id="@+id/cantidad_por_visitar"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cities"
-                android:textSize="18sp"
+                android:text="Lugares por visitar"
+                android:gravity="center_horizontal"
+                android:textSize="16sp"
                 android:textColor="@color/white"/>
         </LinearLayout>
         <LinearLayout
@@ -102,18 +109,10 @@
             android:layout_width="0dp"
             android:layout_height="100dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="50"
-                android:textSize="18sp"
-                android:textColor="@color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Posts"
-                android:textSize="18sp"
-                android:textColor="@color/white"/>
+                android:src="@mipmap/fb"/>
         </LinearLayout>
     </LinearLayout>
 

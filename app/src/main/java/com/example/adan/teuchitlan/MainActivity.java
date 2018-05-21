@@ -36,6 +36,7 @@ import com.estimote.coresdk.observation.region.RegionUtils;
 import com.estimote.coresdk.observation.utils.Proximity;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
+import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -137,13 +138,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Profile usuarioFb= Profile.getCurrentProfile();
         View view=navigationView.getHeaderView(0);
         TextView t1=(TextView)view.findViewById(R.id.txt_nombre_usuario);
         TextView t2=(TextView)view.findViewById(R.id.correo_usuario);
         CircleImageView fotoPerfil=(CircleImageView)view.findViewById(R.id.circle_image);
         if(user!=null){
            Picasso.with(view.getContext()).load(user.getPhotoUrl()).into(fotoPerfil);
-          // fotoPerfil.setImageURI(user.getPhotoUrl());
+           if(usuarioFb!=null){
+               Picasso.with(view.getContext()).load(usuarioFb.getProfilePictureUri(250,250)).into(fotoPerfil);
+
+           }
             t1.setText(user.getDisplayName());
             t2.setText(user.getEmail());
         }
@@ -151,16 +156,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void cambiarImg(Uri imgUrl){
-        try {
-            Log.d("la url de imagen", " es "+imgUrl);
-            CircleImageView fotoPerfil=(CircleImageView)findViewById(R.id.circle_image);
-
-            Picasso.with(this).load(imgUrl).into(fotoPerfil);
-
-
-        }catch(Exception e){}
-    }
 
     @Override
     protected void onResume(){

@@ -18,15 +18,7 @@ public class InformacionBeacon extends AppCompatActivity {
         Toast.makeText(this,"el color es "+color,Toast.LENGTH_SHORT).show();
         TextView txt=(TextView)findViewById(R.id.txt);
         ImageView foto=(ImageView)findViewById(R.id.imagenBeacon);
-        if (color.toString().equals("menta")) {
-            foto.setImageResource(R.drawable.beaconazul);
-            txt.setText("Beacon menta");
 
-        }
-        else if(color.toString().equals("azul")){
-            foto.setImageResource(R.drawable.beaconblue);
-            txt.setText("Beacon azul");
-        }
 
     }
 }
