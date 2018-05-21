@@ -53,7 +53,7 @@ public class tab3atracciones extends Fragment {
         for(int i=0; i<listaAtracciones.size(); i++){
             datosLugaresList.add(new datosLugares(" "+listaAtracciones.get(i).nombre.toString(),
                                                        " "+listaAtracciones.get(i).id.toString(),
-                                                  " "+listaAtracciones.get(i).imagenes.toString(),
+                                                  " "+listaAtracciones.get(i).arrayImagenes().get(0),
                                                        " "+listaAtracciones.get(i).key.toString(),
                                                   " "+listaAtracciones.get(i).descripcion.toString(),
                                                         " "+listaAtracciones.get(i).tipo.toString(),

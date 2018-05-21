@@ -56,8 +56,8 @@ public class tab1hoteles extends Fragment {
         for(int i=0; i<listaHoteles.size(); i++){
             datosLugaresList.add(new datosLugares( " "+listaHoteles.get(i).nombre.toString(),
                                                         " "+listaHoteles.get(i).id.toString(),
-                                                  " "+listaHoteles.get(i).imagenes.toString(),
-                                                      " "+listaHoteles.get(i).key.toString(),
+                                                  " "+listaHoteles.get(i).arrayImagenes().get(0),
+                                                        " "+listaHoteles.get(i).key.toString(),
                                                 " "+listaHoteles.get(i).descripcion.toString(),
                                                      " "+listaHoteles.get(i).tipo.toString(),
                                                  " "+listaHoteles.get(i).ubicacion.toString()));

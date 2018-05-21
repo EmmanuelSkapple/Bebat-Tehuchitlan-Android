@@ -53,7 +53,7 @@ public class tab2restaurantes extends Fragment{
         for(int i=0; i<listaRestaurantes.size(); i++){
             datosLugaresList.add(new datosLugares(" "+listaRestaurantes.get(i).nombre.toString(),
                                                        " "+listaRestaurantes.get(i).id.toString(),
-                                                  " "+listaRestaurantes.get(i).imagenes.toString(),
+                                                  " "+listaRestaurantes.get(i).arrayImagenes().get(0),
                                                        " "+listaRestaurantes.get(i).key.toString(),
                                                  " "+listaRestaurantes.get(i).descripcion.toString(),
                                                        " "+listaRestaurantes.get(i).tipo.toString(),

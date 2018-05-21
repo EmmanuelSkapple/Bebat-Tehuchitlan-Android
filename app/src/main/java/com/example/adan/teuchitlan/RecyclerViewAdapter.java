@@ -7,7 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         holder.nombre.setText(mDatosLugares.get(position).getNombre());
+        new DownLoadImageTask(holder.img).execute(mDatosLugares.get(position).getImagenes());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,14 +74,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView nombre;
         CardView cardView;
-
+        ImageView img;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             nombre = (TextView) itemView.findViewById(R.id.nombre_lugar_id2);
-
-
+            img=(ImageView) itemView.findViewById(R.id.image_item_lugar);
             cardView = (CardView) itemView.findViewById(R.id.cardview_item_lugar_opcio2_id);
 
         }
