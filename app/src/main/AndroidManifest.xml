@@ -65,6 +65,7 @@
         <activity android:name=".Registro" />
         <activity android:name=".SplashScreen">
         </activity>
+        <activity android:name=".informacionLugar"></activity>
     </application>
 
 </manifest>
