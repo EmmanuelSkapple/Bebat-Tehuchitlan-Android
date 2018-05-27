@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-    android:orientation="vertical"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.example.adan.teuchitlan.MainActivity"
         tools:showIn="@layout/app_bar_main">
@@ -24,28 +24,36 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:id="@+id/button"
-                    android:src="@mipmap/uno" />
+                    android:src="@mipmap/uno"
+                    android:padding="30dp"
+                    android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:id="@+id/button2"
-                    android:src="@mipmap/dos" />
+                    android:src="@mipmap/dos"
+                    android:padding="30dp"
+                    android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:id="@+id/button3"
-                    android:src="@mipmap/tres" />
+                    android:src="@mipmap/tres"
+                    android:padding="30dp"
+                    android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:id="@+id/button4"
-                    android:src="@mipmap/cuatro" />
+                    android:src="@mipmap/cuatro"
+                    android:padding="30dp"
+                    android:clickable="true"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

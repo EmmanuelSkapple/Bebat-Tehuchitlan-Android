@@ -37,6 +37,8 @@ public class informacionLugar extends AppCompatActivity implements OnMapReadyCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         Intent intent = getIntent();
 
         nombre = intent.getExtras().getString("nombre");
@@ -73,7 +75,6 @@ public class informacionLugar extends AppCompatActivity implements OnMapReadyCal
         Log.d("recibio el key", key);
         Log.d("recibio el tipo", tipo);
         Log.d("recibio la ubicacion", ubicacion);
-
 
     }
 

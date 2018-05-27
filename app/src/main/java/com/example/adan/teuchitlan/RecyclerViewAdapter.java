@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 /**
@@ -34,6 +32,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View v;
         v= LayoutInflater.from(mContext).inflate(R.layout.cardview_item_lugar_opcion2, parent, false);
         MyViewHolder vHolder = new MyViewHolder(v);
+
+        
 
         return vHolder;
     }
@@ -60,6 +60,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 //lanza el activity
                 mContext.startActivity(intent);
+
+
 
             }
         });
