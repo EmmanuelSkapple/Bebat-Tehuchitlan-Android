@@ -230,9 +230,12 @@ public class beaconActual extends AppCompatActivity {
         cambiarImg(imgs.get(0));
         TextView cultural=(TextView)findViewById(R.id.dato_cultural_text);
         TextView historico=(TextView)findViewById(R.id.dato_historico_text);
+        TextView interes=(TextView)findViewById(R.id.dato_interes_text);
+        TextView curioso=(TextView)findViewById(R.id.dato_curioso_text);
         cultural.setText(sitioH.datoCultural);
         historico.setText(sitioH.datoHistorico);
-
+        interes.setText(sitioH.datoInteres);
+        curioso.setText(sitioH.datoCurioso);
         HorizontalInfiniteCycleViewPager pager = (HorizontalInfiniteCycleViewPager)findViewById(R.id.horizontal_cycle);
         AdapterCarousel adapter = new AdapterCarousel(imgs,getBaseContext());
         Log.d("cantidad imagenes ",Integer.toString( adapter.getCount()));

@@ -7,15 +7,26 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.estimote.coresdk.common.config.EstimoteSDK;
 import com.estimote.coresdk.recognition.packets.EstimoteLocation;
 import com.estimote.coresdk.service.BeaconManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +106,7 @@ public class beaconService extends Service {
     }
 
     public void encontrarSitio(String id){
+        Log.d("encontrar sitio", "id "+id);
         for(sitioHistorico item: lista){
             if(item.idBeacon.equals(id)){
 
@@ -105,9 +117,9 @@ public class beaconService extends Service {
     }
 
     public void showNotification(String title, String message,  String color, sitioHistorico sitio) {
+        long[] v = {400,700};
 
-        if (notificationAlreadyShown) { return; }
-
+        if(notificationAlreadyShown){return ;}
         Intent notifyIntent = new Intent(this, beaconActual.class);
         notifyIntent.putParcelableArrayListExtra("listaSitios",lista);
         notifyIntent.putParcelableArrayListExtra("beacons",listaBeacons);
@@ -117,20 +129,22 @@ public class beaconService extends Service {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivities(this, 0,
                 new Intent[] { notifyIntent }, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-               // .setLargeIcon(bMap)
-                .setContentTitle(title + color)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setVibrate(v);
+        builder.setLargeIcon (BitmapFactory.decodeResource(getResources(), R.drawable.mazamitla));
+        builder.setStyle(new NotificationCompat.InboxStyle().addLine(sitio.datoCurioso).setBigContentTitle("Bienvenido a "+sitio.nombre).setSummaryText("descubriste lugar mágico"));
+        builder.setAutoCancel(true);
+        builder.setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Will display the notification in the notification bar
+        notificationManager.notify(0, builder.build());
         notificationAlreadyShown = true;
+
+
     }
+
+
 
 
 

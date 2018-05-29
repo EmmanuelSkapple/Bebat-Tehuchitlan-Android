@@ -25,7 +25,6 @@
                     android:paddingBottom="0dp"
                     android:id="@+id/button"
                     android:src="@mipmap/uno"
-                    android:padding="30dp"
                     android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
@@ -34,7 +33,6 @@
                     android:paddingBottom="0dp"
                     android:id="@+id/button2"
                     android:src="@mipmap/dos"
-                    android:padding="30dp"
                     android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
@@ -43,7 +41,6 @@
                     android:paddingBottom="0dp"
                     android:id="@+id/button3"
                     android:src="@mipmap/tres"
-                    android:padding="30dp"
                     android:clickable="true"/>
                 <ImageButton
                     android:layout_width="match_parent"
@@ -52,7 +49,6 @@
                     android:paddingBottom="0dp"
                     android:id="@+id/button4"
                     android:src="@mipmap/cuatro"
-                    android:padding="30dp"
                     android:clickable="true"/>
             </LinearLayout>
         </ScrollView>
